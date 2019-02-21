@@ -3,7 +3,7 @@
   namespace apiconnector;
   
   /**
-   * Třída OCApi.
+   * Třída Connector slouží pro komunikaci s API e-shopů.
    *
    * @author    Pavel Filípek <pavel@filipek-czech.cz>
    * @copyright © 2019, Proclient s.r.o.
