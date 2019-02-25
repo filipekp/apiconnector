@@ -113,10 +113,14 @@
           $decodedResult = $this->callApi($url, $paramsArray, $responseAsArray);
         }
       }
-  
+
       return $decodedResult;
     }
-  
+
+    public function callApiJson($url, $paramsArray = [], $responseAsArray = TRUE, $countTry = 3) {
+      return $this->callApi($url, ['data' => json_encode($paramsArray)], $responseAsArray, $countTry);
+    }
+
     /** @return array */
     public function getLastResponse() { return $this->lastResponse; }
     /** @param $requestTimeout */
