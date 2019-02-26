@@ -41,13 +41,16 @@
     private $requestTimeout = 30;
     
     private static $cookieIndex = 0;
+  
+    private $lastTokenFile = '';
     
     public function __construct($apiUrl, $apiKey) {
       $this->apiUrl = $apiUrl;
       $this->apiKey = $apiKey;
   
-      $this->token = @file_get_contents(__DIR__ . '/lasttoken_' . self::$cookieIndex);
       self::$cookieIndex++;
+      $this->lastTokenFile = __DIR__ . '/lasttoken_' . self::$cookieIndex;
+      $this->token = @file_get_contents($this->lastTokenFile);
     }
   
     /**
@@ -64,28 +67,11 @@
       if ($response && array_key_exists('success', $response) && $response['success']) {
         $this->state = $response['success'];
         $this->token = $response['token'];
-        file_put_contents(__DIR__ . '/lasttoken_' . self::$cookieIndex, $this->token);
+        file_put_contents($this->lastTokenFile, $this->token);
         $success = TRUE;
       }
   
       return $success;
-    }
-  
-    /**
-     * Transformace dat.
-     *
-     * @param $data
-     */
-    private function transformData(&$data) {
-      array_walk($data, function(&$value, &$key) {
-        if ($value === true) {
-          $value = 'true';
-        } else if ($value === false) {
-          $value = 'false';
-        } elseif (is_null($value)) {
-          $value = 'null';
-        }
-      });
     }
   
     /**
@@ -99,8 +85,6 @@
      * @return mixed
      */
     public function callApi ($url, $paramsArray = [], $responseAsArray = TRUE, $countTry = 3) {
-      $this->transformData($paramsArray);
-      
       /** @var string $link */
       $link = $this->apiUrl . $url . (($this->token) ? '&token=' . $this->token : '');
   
