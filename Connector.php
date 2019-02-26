@@ -72,6 +72,23 @@
     }
   
     /**
+     * Transformace dat.
+     *
+     * @param $data
+     */
+    private function transformData(&$data) {
+      array_walk($data, function(&$value, &$key) {
+        if ($value === true) {
+          $value = 'true';
+        } else if ($value === false) {
+          $value = 'false';
+        } elseif (is_null($value)) {
+          $value = 'null';
+        }
+      });
+    }
+  
+    /**
      * Zajištujě zavolání API metody.
      *
      * @param       $url
@@ -82,6 +99,8 @@
      * @return mixed
      */
     public function callApi ($url, $paramsArray = [], $responseAsArray = TRUE, $countTry = 3) {
+      $this->transformData($paramsArray);
+      
       /** @var string $link */
       $link = $this->apiUrl . $url . (($this->token) ? '&token=' . $this->token : '');
   
