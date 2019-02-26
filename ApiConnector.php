@@ -46,7 +46,7 @@
       $this->apiUrl = $apiUrl;
       $this->apiKey = $apiKey;
   
-      $this->token = @file_get_contents(__DIR__ . '/lasttoken');
+      $this->token = @file_get_contents(__DIR__ . '/lasttoken_' . self::$cookieIndex);
       self::$cookieIndex++;
     }
   
@@ -64,7 +64,7 @@
       if ($response && array_key_exists('success', $response) && $response['success']) {
         $this->state = $response['success'];
         $this->token = $response['token'];
-        file_put_contents(__DIR__ . '/lasttoken', $this->token);
+        file_put_contents(__DIR__ . '/lasttoken_' . self::$cookieIndex, $this->token);
         $success = TRUE;
       }
   
