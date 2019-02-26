@@ -15,7 +15,7 @@
 	],
 	"autoload" : {
 		"files": [
-			"ApiConnector.php",
+			"Connector.php",
 			"Response.php"
 		]
 	}
