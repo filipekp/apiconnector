@@ -122,22 +122,47 @@
         //execute post
         $result             = curl_exec($ch);
         $this->lastResponse = ['content' => $result, 'headers' => curl_getinfo($ch)];
+  
+        //close connection
+        curl_close($ch);
+        $decodedResult = json_decode($result, $responseAsArray);
+        if ($decodedResult) {
+          if ($countTry > 0 && $decodedResult['success'] == FALSE) {
+            $countTry--;
+            if ($this->login($countTry)) {
+              $decodedResult = $this->callApi($url, $paramsArray, $responseAsArray);
+            }
+          }
       
-      //close connection
-      curl_close($ch);
-      $decodedResult = json_decode($result, $responseAsArray);
-      if ($decodedResult['status'] == FALSE) {
-        $countTry--;
-        if ($this->login($countTry)) {
-          $decodedResult = $this->callApi($url, $paramsArray, $responseAsArray);
+          $result = $decodedResult;
         }
-      }
-
-      return $decodedResult;
+    
+        return $result;
     }
-
-    public function callApiJson($url, $paramsArray = [], $responseAsArray = TRUE, $countTry = 3) {
-      return $this->callApi($url, ['data' => json_encode($paramsArray)], $responseAsArray, $countTry);
+  
+    /**
+     * Zajištujě zavolání API metody a data zabalí do JSON a za gzipuje.
+     *
+     * @param       $url
+     * @param array $paramsArray
+     * @param bool  $responseAsArray
+     *
+     * @return mixed|string
+     */
+    public function callApiJson($url, $paramsArray = [], $responseAsArray = TRUE) {
+      $response = $this->callApi($url, [gzencode(json_encode($paramsArray), 9)], $responseAsArray);
+  
+      if (($dataJsonFromGz = @gzdecode($response))) {
+        $response = $dataJsonFromGz;
+        unset($dataJsonFromGz);
+      }
+  
+      if (($data = @json_decode($response, TRUE))) {
+        $response = $data;
+        unset($data);
+      }
+      
+      return $response;
     }
 
     /** @return array */
