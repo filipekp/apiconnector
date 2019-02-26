@@ -43,6 +43,7 @@
     private static $cookieIndex = 0;
   
     private $lastTokenFile = '';
+    private $logged = FALSE;
     
     public function __construct($apiUrl, $apiKey) {
       $this->apiUrl = $apiUrl;
@@ -111,9 +112,10 @@
         curl_close($ch);
         $decodedResult = json_decode($result, $responseAsArray);
         if ($decodedResult) {
-          if ($countTry > 0 && $decodedResult['success'] == FALSE) {
+          if ($countTry > 0 && $decodedResult['success'] == FALSE && !$this->logged) {
             $countTry--;
             if ($this->login($countTry)) {
+              $this->logged = TRUE;
               $decodedResult = $this->callApi($url, $paramsArray, $responseAsArray);
             }
           }
