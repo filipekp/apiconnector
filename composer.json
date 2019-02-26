@@ -1,0 +1,12 @@
+{
+	"name": "libraries/apiconnector",
+	"description": "Common API classes for project interconnection",
+	"type": "project",
+	"license": "proprietary",
+	"authors": [
+		{
+			"name": "PRO CLIENT, s.r.o",
+			"homepage": "https://www.proclient.cz/"
+		}
+	]
+}
