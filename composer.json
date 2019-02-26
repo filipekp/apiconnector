@@ -12,5 +12,11 @@
 			"name": "Pavel Filípek",
 			"homepage": "https://www.filipek-czech.cz/"
 		}
-	]
+	],
+	"autoload" : {
+		"files": [
+			"ApiConnector.php",
+			"Response.php"
+		]
+	}
 }
