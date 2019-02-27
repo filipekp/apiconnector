@@ -14,14 +14,6 @@
     /** @var string Verze */
     const VERSION = '1.0.0';
     
-    /** @var string  */
-    const _LOF_FILE = '/log*';
-    
-    /** @var int  */
-    const _LOG_FOR_SECONDS = 7200;
-    
-    const _NUMBER_OF_THREADS = 8;
-    
     /** @var null|string  */
     private $apiUrl = NULL;
     
