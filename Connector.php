@@ -90,7 +90,11 @@
       $link = $this->apiUrl . $url . (($this->token) ? '&token=' . $this->token : '');
   
       $ch = curl_init();
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Expect:']);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+          'Expect:',
+          'Accept-Encoding: gzip, deflate'
+        ]);
+        curl_setopt($ch, CURLOPT_ENCODING, "gzip");
         curl_setopt($ch, CURLOPT_URL, $link);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_TIMEOUT, $this->requestTimeout);
