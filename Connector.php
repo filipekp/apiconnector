@@ -136,12 +136,7 @@
      * @return mixed|string
      */
     public function callApiJson($url, $paramsArray = [], $responseAsArray = TRUE) {
-      $response = $this->callApi($url, [gzencode(json_encode($paramsArray), 9)], $responseAsArray);
-  
-      if (($dataJsonFromGz = @gzdecode($response))) {
-        $response = $dataJsonFromGz;
-        unset($dataJsonFromGz);
-      }
+      $response = $this->callApi($url, [json_encode($paramsArray)], $responseAsArray);
   
       if (($data = @json_decode($response, TRUE))) {
         $response = $data;
