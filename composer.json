@@ -3,6 +3,7 @@
 	"description": "Common API classes for project interconnection",
 	"type": "project",
 	"license": "proprietary",
+	"minimum-stability": "dev",
 	"authors": [
 		{
 			"name": "PRO CLIENT, s.r.o",
