@@ -18,5 +18,8 @@
 			"Connector.php",
 			"Response.php"
 		]
+	},
+	"require": {
+		"filipekp/helpers": "^1.0"
 	}
 }

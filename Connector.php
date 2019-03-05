@@ -57,8 +57,8 @@
       $success  = FALSE;
       $response = $this->callApi('login', ['key' => $this->apiKey], TRUE, $countTry);
   
-      if ($response && array_key_exists('success', $response) && $response['success']) {
-        $this->state = $response['success'];
+      if ($response && array_key_exists('status', $response) && $response['status']) {
+        $this->state = $response['status'];
         $this->token = $response['token'];
         file_put_contents($this->lastTokenFile, $this->token);
         $success = TRUE;
@@ -108,7 +108,7 @@
         curl_close($ch);
         $decodedResult = json_decode($result, $responseAsArray);
         if ($decodedResult) {
-          if ($countTry > 0 && $decodedResult['success'] == FALSE && !$this->logged) {
+          if ($countTry > 0 && $decodedResult['status'] == FALSE && !$this->logged) {
             $countTry--;
             if ($this->login($countTry)) {
               $this->logged = TRUE;

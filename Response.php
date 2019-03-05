@@ -2,6 +2,8 @@
   
   namespace apiconnector;
   
+  use PF\helpers\MyString;
+
   /**
    * Třída Response.
    *
@@ -18,7 +20,12 @@
     private $token = FALSE;
   
     public function __construct($data) {
-    
+      foreach ($data as $property => $value) {
+        $classProperty = lcfirst(MyString::camelize($property));
+        if (property_exists($this, $classProperty)) {
+          $this->{$classProperty} = $value;
+        }
+      }
     }
   
     public function getGenerateTime() { return $this->generateTime; }
