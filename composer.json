@@ -14,10 +14,7 @@
 		}
 	],
 	"autoload" : {
-		"files": [
-			"Connector.php",
-			"Response.php"
-		]
+		"classmap": ["src"]
 	},
 	"require": {
 		"filipekp/helpers": "^1.0"
