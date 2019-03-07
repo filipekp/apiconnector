@@ -2,6 +2,8 @@
   
   namespace apiconnector;
   
+  use PF\helpers\MyArray;
+
   /**
    * Třída Connector slouží pro komunikaci s API e-shopů.
    *
@@ -108,7 +110,8 @@
         curl_close($ch);
         $decodedResult = json_decode($result, $responseAsArray);
         if ($decodedResult) {
-          if ($countTry > 0 && $decodedResult['status'] == FALSE && !$this->logged) {
+          $decodedResultArr = MyArray::init($decodedResult);
+          if ($countTry > 0 && $decodedResultArr->item('status', $decodedResultArr->item('success', FALSE)) == FALSE && !$this->logged) {
             $countTry--;
             if ($this->login($countTry)) {
               $this->logged = TRUE;
