@@ -59,8 +59,8 @@
       $success  = FALSE;
       $response = $this->callApi('login', ['key' => $this->apiKey], TRUE, $countTry);
   
-      if ($response && array_key_exists('status', $response) && $response['status']) {
-        $this->state = $response['status'];
+      if ($response && array_key_exists('token', $response) && $response['token']) {
+        $this->state = (bool)$response['token'];
         $this->token = $response['token'];
         file_put_contents($this->lastTokenFile, $this->token);
         $success = TRUE;
