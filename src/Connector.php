@@ -35,17 +35,27 @@
     private $requestTimeout = 30;
     
     private static $cookieIndex = 0;
+    
+    private $tmpDir = NULL;
   
     private $lastTokenFile = '';
     private $logged = FALSE;
-    
-    public function __construct($apiUrl, $apiKey) {
+  
+    /**
+     * Connector constructor.
+     *
+     * @param $apiUrl
+     * @param $apiKey
+     * @param $tmpDir
+     */
+    public function __construct($apiUrl, $apiKey, $tmpDir = NULL) {
       $this->apiUrl = $apiUrl;
       $this->apiKey = $apiKey;
   
       self::$cookieIndex++;
-      $this->lastTokenFile = __DIR__ . '/lasttoken_' . self::$cookieIndex;
-      $this->token = @file_get_contents($this->lastTokenFile);
+      $this->tmpDir        = ((is_null($tmpDir)) ? sys_get_temp_dir() : $tmpDir);
+      $this->lastTokenFile = $this->tmpDir . '/lasttoken_' . self::$cookieIndex;
+      $this->token         = @file_get_contents($this->lastTokenFile);
     }
   
     /**
