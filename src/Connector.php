@@ -39,6 +39,7 @@
     private $tmpDir = NULL;
   
     private $lastTokenFile = '';
+    private $cookieFile = '';
     private $logged = FALSE;
   
     /**
@@ -52,9 +53,10 @@
       $this->apiUrl = $apiUrl;
       $this->apiKey = $apiKey;
   
-      self::$cookieIndex = md5(var_export($apiUrl, TRUE) . '_' . var_export($apiKey, TRUE));
+      self::$cookieIndex   = md5(json_encode([$apiUrl, $apiKey]));
       $this->tmpDir        = rtrim(((is_null($tmpDir)) ? sys_get_temp_dir() : $tmpDir), '/') . '/';
       $this->lastTokenFile = $this->tmpDir . 'lasttoken_' . self::$cookieIndex;
+      $this->cookieFile    = $this->tmpDir . 'cookies_' . self::$cookieIndex;
       $this->token         = @file_get_contents($this->lastTokenFile);
     }
   
@@ -107,8 +109,8 @@
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
         curl_setopt($ch, CURLOPT_USERAGENT, "ApiConnector-proclient-ver." . self::VERSION);
-        curl_setopt($ch, CURLOPT_COOKIEJAR, $this->tmpDir . 'curl-cookies' . self::$cookieIndex . '.txt');
-        curl_setopt($ch, CURLOPT_COOKIEFILE, $this->tmpDir . 'curl-cookies' . self::$cookieIndex . '.txt');
+        curl_setopt($ch, CURLOPT_COOKIEJAR, $this->cookieFile);
+        curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookieFile);
         curl_setopt($ch, CURLOPT_POST, count($paramsArray));
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($paramsArray));
         
