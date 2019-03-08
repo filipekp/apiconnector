@@ -52,7 +52,7 @@
       $this->apiUrl = $apiUrl;
       $this->apiKey = $apiKey;
   
-      self::$cookieIndex = md5(var_export($apiUrl) . '_' . var_export($apiKey));
+      self::$cookieIndex = md5(var_export($apiUrl, TRUE) . '_' . var_export($apiKey, TRUE));
       $this->tmpDir        = rtrim(((is_null($tmpDir)) ? sys_get_temp_dir() : $tmpDir), '/') . '/';
       $this->lastTokenFile = $this->tmpDir . 'lasttoken_' . self::$cookieIndex;
       $this->token         = @file_get_contents($this->lastTokenFile);
