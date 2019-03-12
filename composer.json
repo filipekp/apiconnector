@@ -17,6 +17,6 @@
 		"classmap": ["src"]
 	},
 	"require": {
-		"filipekp/helpers": "^1.0"
+		"filipekp/helpers": "^1"
 	}
 }
