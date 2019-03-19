@@ -49,7 +49,7 @@
      */
     public function checkMandatory() {
       foreach (self::$mandatoryProperties as $property) {
-        if (!array_key_exists($property, $this->json) || (array_key_exists($property, $this->json) && is_null($this->json[$property]))) {
+        if (is_null(MyArray::init($this->json)->item($property))) {
           throw new \InvalidArgumentException("Mandatory key `{$property}` is not set.");
         }
       }
