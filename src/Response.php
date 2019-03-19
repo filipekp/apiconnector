@@ -14,7 +14,7 @@
    * @copyright © 2019, Proclient s.r.o.
    * @created   20.02.2019
    */
-  class Response implements \IteratorAggregate, \ArrayAccess, \Serializable, \Countable
+  class Response implements \IteratorAggregate, \ArrayAccess, \Countable
   {
     public static $mandatoryProperties = [
       'datetime_stamp',
@@ -35,7 +35,7 @@
      */
     public function __construct($data) {
       $this->json = new JSON($data);
-      foreach ($data as $key => $itemData) {
+      foreach ($this->json as $key => $itemData) {
         $method = 'set' . MyString::camelize($key);
         if (method_exists($this, $method)) {
           $this->{$method}($itemData);
@@ -159,7 +159,7 @@
     public function __toString() {
       $this->checkMandatory();
       
-      return (string)$this->json;
+      return (string)$this->json;;
     }
   
     public function getIterator() {
@@ -183,11 +183,16 @@
     }
     
     public function serialize() {
-      serialize($this->arrayData);
+      return $this->__toString();
     }
-    
-    public function unserialize($serialized) {
-      $this->arrayData = $this->unserialize($serialized);
+  
+    /**
+     * @param string $serialized json
+     *
+     * @return Response
+     */
+    public static function unserialize($serialized) {
+      return new self($serialized);
     }
     
     public function count($mode = COUNT_NORMAL){
