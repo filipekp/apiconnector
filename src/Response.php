@@ -17,10 +17,11 @@
   class Response implements \IteratorAggregate, \ArrayAccess, \Serializable, \Countable
   {
     public static $mandatoryProperties = [
+      'datetime_stamp',
       'generate_time',
-      'errors',
       'success',
-      'data',
+//      'errors',
+//      'data',
     ];
     
     /** @var JSON  */
