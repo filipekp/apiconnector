@@ -69,6 +69,11 @@
       if (!is_numeric($generateTime)) { throw new \InvalidArgumentException('Property `generate_time` must be `float`|`int` type.'); }
       $this->json['generate_time'] = $generateTime;
     }
+    
+    private function setDatetimeStamp($datetimeStamp) {
+      if (($datetimeStamp = \DateTime::createFromFormat('Y-m-d H:i:s', $datetimeStamp))) { throw new \InvalidArgumentException('Property `datetime_stamp` must be in format `Y-m-d H:i:s`.'); }
+      $this->json['datetime_stamp'] = $datetimeStamp;
+    }
   
     /**
      * @param array $errors
@@ -123,6 +128,13 @@
      */
     public function getGenerateTime() {
       return $this->json['generate_time'];
+    }
+  
+    /**
+     * @return float
+     */
+    public function getDatetimeStamp() {
+      return $this->json['datetime_stamp'];
     }
   
     /**
