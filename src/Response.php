@@ -43,7 +43,7 @@
       
       $this->checkMandatory();
       
-      $this->arrayData = &$this->getData();
+      $this->arrayData = $this->getData();
     }
   
     /**
