@@ -44,7 +44,9 @@
       
       $this->checkMandatory();
       
-      $this->arrayData = $this->getData();
+      if ($this->getErrors()) {
+        $this->arrayData = $this->getData();
+      }
     }
   
     /**
@@ -127,7 +129,7 @@
      * @return array
      */
     public function getErrors() {
-      return $this->json['errors'];
+      return MyArray::init($this->json)->item('errors', []);
     }
   
     /**
@@ -141,7 +143,7 @@
      * @return array
      */
     public function getData() {
-      return $this->json['data'];
+      return MyArray::init($this->json)->item('data', []);
     }
   
     /**
