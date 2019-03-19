@@ -72,14 +72,19 @@
     
     private function setDatetimeStamp($datetimeStampInput) {
       $timeZone = 'Europe/Berlin';
+      $format = 'Y-m-d H:i:s';
       if (is_array($datetimeStampInput)) {
         $timeZone = MyArray::init($datetimeStampInput)->item('timezone', $timeZone);
-        $datetimeStampString = MyArray::init($datetimeStampInput)->item('date', date('Y-m-d H:i:s'));
+        $datetimeStampString = MyArray::init($datetimeStampInput)->item('date', date('Y-m-d H:i:s.u'));
+        $format = 'Y-m-d H:i:s.u';
       } else {
         $datetimeStampString = $datetimeStampInput;
       }
       
-      if (!($datetimeStamp = \DateTime::createFromFormat('Y-m-d H:i:s', $datetimeStampString))) { throw new \InvalidArgumentException('Property `datetime_stamp` must be in format `Y-m-d H:i:s`.'); }
+      if (!($datetimeStamp = \DateTime::createFromFormat($format, $datetimeStampString))) {
+        throw new \InvalidArgumentException("Property `datetime_stamp` must be in format `{$format}`.");
+      }
+      
       $datetimeStamp->setTimezone((new \DateTimeZone($timeZone)));
       $this->json['datetime_stamp'] = $datetimeStamp;
     }
