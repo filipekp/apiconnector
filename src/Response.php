@@ -91,7 +91,7 @@
      */
     private function setSuccess($success) {
       if (!is_bool($success)) { throw new \InvalidArgumentException('Property `success` must be `boolean` type.'); }
-      $this->json['success'] = $success;
+      $this->json['status'] = $success;
     }
   
     /**
@@ -99,7 +99,7 @@
      */
     private function setStatus($status) {
       if (!is_bool($status)) { throw new \InvalidArgumentException('Property `status` must be `boolean` type.'); }
-      $this->json['success'] = $status;
+      $this->json['status'] = $status;
     }
   
     /**
@@ -135,8 +135,8 @@
     /**
      * @return boolean
      */
-    public function getSuccess() {
-      return $this->json['success'];
+    public function getStatus() {
+      return $this->json['status'];
     }
   
     /**
