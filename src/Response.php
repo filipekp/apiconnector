@@ -63,7 +63,7 @@
      * @param float $generateTime
      */
     private function setGenerateTime($generateTime) {
-      if (!is_float($generateTime)) { throw new \InvalidArgumentException('Property `generate_time` must be `float` type.'); }
+      if (!is_numeric($generateTime)) { throw new \InvalidArgumentException('Property `generate_time` must be `float`|`int` type.'); }
       $this->json['generate_time'] = $generateTime;
     }
   
