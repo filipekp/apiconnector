@@ -71,7 +71,7 @@
     }
     
     private function setDatetimeStamp($datetimeStamp) {
-      if (($datetimeStamp = \DateTime::createFromFormat('Y-m-d H:i:s', $datetimeStamp))) { throw new \InvalidArgumentException('Property `datetime_stamp` must be in format `Y-m-d H:i:s`.'); }
+      if (!($datetimeStamp = \DateTime::createFromFormat('Y-m-d H:i:s', $datetimeStamp))) { throw new \InvalidArgumentException('Property `datetime_stamp` must be in format `Y-m-d H:i:s`.'); }
       $this->json['datetime_stamp'] = $datetimeStamp;
     }
   
