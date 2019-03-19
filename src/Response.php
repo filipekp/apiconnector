@@ -187,7 +187,7 @@
       $this->arrayData = $this->unserialize($serialized);
     }
     
-    public function count($mode = 'COUNT_NORMAL'){
+    public function count($mode = COUNT_NORMAL){
       return count($this->arrayData, $mode);
     }
   }
