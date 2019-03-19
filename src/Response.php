@@ -5,6 +5,7 @@
   use PF\helpers\MyArray;
   use PF\helpers\MyString;
   use PF\helpers\types\JSON;
+  use Traversable;
 
   /**
    * Třída Response.
@@ -13,7 +14,7 @@
    * @copyright © 2019, Proclient s.r.o.
    * @created   20.02.2019
    */
-  class Response
+  class Response implements \IteratorAggregate, \ArrayAccess, \Serializable, \Countable
   {
     public static $mandatoryProperties = [
       'generate_time',
@@ -24,6 +25,7 @@
     
     /** @var JSON  */
     private $json;
+    private $arrayData = [];
   
     /**
      * Response constructor.
@@ -40,6 +42,8 @@
       }
       
       $this->checkMandatory();
+      
+      $this->arrayData = &$this->getData();
     }
   
     /**
@@ -153,5 +157,37 @@
       $this->checkMandatory();
       
       return (string)$this->json;
+    }
+  
+    public function getIterator() {
+      return new \ArrayIterator($this->arrayData);
+    }
+    
+    public function offsetExists($offset) {
+      return array_key_exists($offset, $this->arrayData);
+    }
+    
+    public function offsetGet($offset) {
+      return $this->arrayData[$offset];
+    }
+    
+    public function offsetSet($offset, $value) {
+      $this->arrayData[$offset] = $value;
+    }
+    
+    public function offsetUnset($offset) {
+      unset($this->arrayData[$offset]);
+    }
+    
+    public function serialize() {
+      serialize($this->arrayData);
+    }
+    
+    public function unserialize($serialized) {
+      $this->arrayData = $this->unserialize($serialized);
+    }
+    
+    public function count($mode = 'COUNT_NORMAL'){
+      return count($this->arrayData, $mode);
     }
   }
