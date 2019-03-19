@@ -70,8 +70,17 @@
       $this->json['generate_time'] = $generateTime;
     }
     
-    private function setDatetimeStamp($datetimeStamp) {
-      if (!($datetimeStamp = \DateTime::createFromFormat('Y-m-d H:i:s', $datetimeStamp))) { throw new \InvalidArgumentException('Property `datetime_stamp` must be in format `Y-m-d H:i:s`.'); }
+    private function setDatetimeStamp($datetimeStampInput) {
+      $timeZone = 'Europe/Berlin';
+      if (is_array($datetimeStampInput)) {
+        $timeZone = MyArray::init($datetimeStampInput)->item('timezone', $timeZone);
+        $datetimeStampString = MyArray::init($datetimeStampInput)->item('date', date('Y-m-d H:i:s'));
+      } else {
+        $datetimeStampString = $datetimeStampInput;
+      }
+      
+      if (!($datetimeStamp = \DateTime::createFromFormat('Y-m-d H:i:s', $datetimeStampString))) { throw new \InvalidArgumentException('Property `datetime_stamp` must be in format `Y-m-d H:i:s`.'); }
+      $datetimeStamp->setTimezone((new \DateTimeZone($timeZone)));
       $this->json['datetime_stamp'] = $datetimeStamp;
     }
   
