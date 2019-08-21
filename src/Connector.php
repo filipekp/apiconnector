@@ -13,9 +13,6 @@
    */
   class Connector
   {
-    /** @var string Verze */
-    const VERSION = '1.0.0';
-    
     /** @var null|string  */
     private $apiUrl = NULL;
     
