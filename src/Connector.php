@@ -41,6 +41,9 @@
     private $cookieFile = '';
     private $logged = FALSE;
     
+    /** @var bool  */
+    protected $testovaciPromenna = FALSE;
+    
     /**
      * Connector constructor.
      *
