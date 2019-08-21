@@ -7,6 +7,8 @@
   /**
    * Třída Connector slouží pro komunikaci s API e-shopů.
    *
+   * test popisu
+   *
    * @author    Pavel Filípek <pavel@filipek-czech.cz>
    * @copyright © 2019, Proclient s.r.o.
    * @created   20.02.2019
