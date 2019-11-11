@@ -125,6 +125,10 @@
       $decodedResult = json_decode($result, $responseAsArray);
       if ($decodedResult) {
         $decodedResultArr = MyArray::init($decodedResult);
+        $lastResponseArr = MyArray::init($this->lastResponse);
+        
+        $this->logged = !in_array((int)$lastResponseArr->item(['headers', 'http_code'], 500), [401, 403]);
+        
         if ($countTry > 0 && $decodedResultArr->item('status', $decodedResultArr->item('success', FALSE)) == FALSE && !$this->logged) {
           $countTry--;
           if ($this->login($countTry)) {
