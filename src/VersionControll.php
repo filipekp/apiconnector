@@ -17,9 +17,12 @@
       $composer = $event->getComposer();
       $v = $composer->getPackage()->getPrettyVersion();
       
-      $file = __DIR__ . '/Connector.php';
-      $fc = file_get_contents($file);
-      file_put_contents($file, str_replace('___VERSION_N/A___', $v, $fc));
+//      $file = __DIR__ . '/Connector.php';
+//      $fc = file_get_contents($file);
+//      file_put_contents($file, str_replace('___VERSION_N/A___', $v, $fc));
+      
+      var_dump(' upgrade to: ' . $v);
+      file_put_contents(__DIR__ . '/version.log', $v);
     }
     
 //    public static function postAutoloadDump($event) {
