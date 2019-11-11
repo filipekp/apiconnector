@@ -16,6 +16,9 @@
 	"autoload" : {
 		"classmap": ["src"]
 	},
+	"scripts": {
+		"post-update-cmd": "apiconnector\\VersionControll::postUpdate"
+	},
 	"require": {
 		"filipekp/helpers": "^1"
 	}
