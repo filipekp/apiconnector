@@ -2,6 +2,7 @@
   
   namespace apiconnector;
   
+  use PackageVersions\Versions;
   use PF\helpers\MyArray;
   
   /**
@@ -15,7 +16,7 @@
    */
   class Connector
   {
-    const VERSION = '___VERSION_N/A___';
+    private static $VERSION = '___VERSION_N/A___';
     
     /** @var null|string  */
     private $apiUrl = NULL;
@@ -62,6 +63,8 @@
       $this->lastTokenFile = $this->tmpDir . 'lasttoken_' . self::$cookieIndex;
       $this->cookieFile    = $this->tmpDir . 'cookies_' . self::$cookieIndex;
       $this->token         = @file_get_contents($this->lastTokenFile);
+      
+      self::$VERSION = Versions::getVersion('libraries/apiconnector');
     }
     
     /**
