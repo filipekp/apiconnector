@@ -18,6 +18,7 @@
 	},
 	"require": {
 		"filipekp/helpers": "^1",
-		"ocramius/package-versions": "^1"
+		"ocramius/package-versions": "^1",
+		"ext-curl": "*"
 	}
 }
