@@ -2,6 +2,7 @@
   
   namespace apiconnector;
   
+  use Composer\Installer\PackageEvent;
   use Composer\Script\Event;
 
   /**
@@ -13,16 +14,19 @@
    */
   class VersionControll
   {
-    public static function postPackageUpdate(Event $event) {
-      $composer = $event->getComposer();
-      $v = $composer->getPackage()->getPrettyVersion();
+    public static function postPackage(PackageEvent $event) {
+//      $composer = $event->getComposer();
+//      $v = $composer->getPackage()->getPrettyVersion();
+      var_dump($event->getName());
+      var_dump($event->getComposer()->getPackage()->getPrettyVersion());
+      var_dump($event->getFlags());
       
 //      $file = __DIR__ . '/Connector.php';
 //      $fc = file_get_contents($file);
 //      file_put_contents($file, str_replace('___VERSION_N/A___', $v, $fc));
       
-      var_dump(' upgrade to: ' . $v);
-      file_put_contents(__DIR__ . '/version.log', $v);
+//      var_dump(' upgrade to: ' . $v);
+//      file_put_contents(__DIR__ . '/version.log', $v);
     }
     
 //    public static function postAutoloadDump($event) {
