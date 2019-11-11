@@ -43,6 +43,7 @@
     
     /** @var bool  */
     protected $testovaciPromenna = FALSE;
+    private static $currVersion = 'N/A';
     
     /**
      * Connector constructor.
@@ -60,6 +61,8 @@
       $this->lastTokenFile = $this->tmpDir . 'lasttoken_' . self::$cookieIndex;
       $this->cookieFile    = $this->tmpDir . 'cookies_' . self::$cookieIndex;
       $this->token         = @file_get_contents($this->lastTokenFile);
+      
+      self::$currVersion = trim(exec('git describe --tags --abbrev=0'));
     }
     
     /**
@@ -110,7 +113,7 @@
       curl_setopt($ch, CURLOPT_AUTOREFERER, TRUE);
       curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
       curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-      curl_setopt($ch, CURLOPT_USERAGENT, "ApiConnector-proclient-ver." . self::VERSION);
+      curl_setopt($ch, CURLOPT_USERAGENT, "ApiConnector-proclient-ver." . self::$currVersion);
       curl_setopt($ch, CURLOPT_COOKIEJAR, $this->cookieFile);
       curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookieFile);
       curl_setopt($ch, CURLOPT_POST, count($paramsArray));
