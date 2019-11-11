@@ -13,7 +13,7 @@
    */
   class VersionControll
   {
-    public static function postUpdate(Event $event) {
+    public static function postPackageUpdate(Event $event) {
       $composer = $event->getComposer();
       $v = $composer->getPackage()->getPrettyVersion();
       

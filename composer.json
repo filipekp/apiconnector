@@ -17,7 +17,7 @@
 		"classmap": ["src"]
 	},
 	"scripts": {
-		"post-update-cmd": "apiconnector\\VersionControll::postUpdate"
+		"post-package-update": "apiconnector\\VersionControll::postPackageUpdate"
 	},
 	"require": {
 		"filipekp/helpers": "^1"
