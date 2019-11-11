@@ -43,4 +43,10 @@
 ////write the entire string
 //      file_put_contents('msghistory.txt', $str);
 //    }
+  
+    public static function postUpdate(Event $event) {
+      var_dump($event->getComposer()->getPackage()->getName());
+      var_dump($event->getComposer()->getPackage()->getPrettyVersion());
+      // do stuff
+    }
   }

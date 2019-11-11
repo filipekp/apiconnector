@@ -18,7 +18,8 @@
 	},
 	"scripts": {
 		"post-package-install": "apiconnector\\VersionControll::postPackage",
-		"post-package-update": "apiconnector\\VersionControll::postPackage"
+		"post-package-update": "apiconnector\\VersionControll::postPackage",
+		"post-update-cmd": "apiconnector\\VersionControll::postUpdate"
 	},
 	"require": {
 		"filipekp/helpers": "^1"
