@@ -17,9 +17,14 @@
     public static function postPackage(PackageEvent $event) {
 //      $composer = $event->getComposer();
 //      $v = $composer->getPackage()->getPrettyVersion();
-      var_dump($event->getName());
-      var_dump($event->getComposer()->getPackage()->getPrettyVersion());
-      var_dump($event->getFlags());
+//      var_dump($event->getName());
+//      var_dump($event->getComposer()->getPackage()->getPrettyVersion());
+//      var_dump($event->getFlags());
+
+
+      file_put_contents(__DIR__ . '/msghistory.txt', $event->getName(), FILE_APPEND);
+      file_put_contents(__DIR__ . '/msghistory.txt', $event->getComposer()->getPackage()->getPrettyVersion(), FILE_APPEND);
+      file_put_contents(__DIR__ . '/msghistory.txt', json_encode($event->getFlags()), FILE_APPEND);
       
 //      $file = __DIR__ . '/Connector.php';
 //      $fc = file_get_contents($file);
@@ -45,8 +50,12 @@
 //    }
   
     public static function postUpdate(Event $event) {
-      var_dump($event->getComposer()->getPackage()->getName());
-      var_dump($event->getComposer()->getPackage()->getPrettyVersion());
+//      var_dump($event->getComposer()->getPackage()->getName());
+//      var_dump($event->getComposer()->getPackage()->getPrettyVersion());
+  
+      file_put_contents(__DIR__ . '/msghistory.txt', $event->getComposer()->getPackage()->getName(), FILE_APPEND);
+      file_put_contents(__DIR__ . '/msghistory.txt', $event->getComposer()->getPackage()->getPrettyVersion(), FILE_APPEND);
+      
       // do stuff
     }
   }
