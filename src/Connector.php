@@ -199,4 +199,12 @@
      * @throws \Exception
      */
     public function setDev() { throw new \Exception('Method ' . __METHOD__ . ' is deprecated. For Dev create new instance of ' . __CLASS__); }
+  
+    /**
+     * Vrátí aktuální verzi konektoru.
+     * @return string
+     */
+    public static function getVersion() {
+      return self::$VERSION;
+    }
   }
