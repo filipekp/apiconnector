@@ -19,7 +19,7 @@
 	"require": {
 		"php": "^7",
 		"filipekp/helpers": "^1",
-		"ocramius/package-versions": "1.4*",
+		"ocramius/package-versions": "1.4.*",
 		"ext-curl": "*"
 	}
 }
