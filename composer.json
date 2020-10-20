@@ -14,7 +14,7 @@
 		}
 	],
 	"autoload" : {
-		"classmap": ["src"]
+		"classmap": ["src/"]
 	},
 	"require": {
 		"php": "^7",
