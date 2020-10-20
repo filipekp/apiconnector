@@ -64,7 +64,7 @@
       $this->cookieFile    = $this->tmpDir . 'cookies_' . self::$cookieIndex;
       $this->token         = @file_get_contents($this->lastTokenFile);
   
-      $v = explode('@', Versions::getVersion('libraries/apiconnector'));
+      $v = explode('@', Versions::getVersion('filipekp/apiconnector'));
       self::$VERSION = $v[0];
     }
     
