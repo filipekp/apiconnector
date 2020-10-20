@@ -1,5 +1,5 @@
 {
-	"name": "libraries/apiconnector",
+	"name": "filipekp/apiconnector",
 	"description": "Common API classes for project interconnection",
 	"type": "project",
 	"license": "proprietary",
