@@ -2,7 +2,6 @@
   
   namespace apiconnector;
   
-  use PackageVersions\Versions;
   use PF\helpers\MyArray;
   
   /**
@@ -64,8 +63,8 @@
       $this->cookieFile    = $this->tmpDir . 'cookies_' . self::$cookieIndex;
       $this->token         = @file_get_contents($this->lastTokenFile);
   
-      $v = explode('@', Versions::getVersion('filipekp/apiconnector'));
-      self::$VERSION = $v[0];
+      $v = filemtime(__DIR__);
+      self::$VERSION = date('Y.md.His', $v);
     }
     
     /**
