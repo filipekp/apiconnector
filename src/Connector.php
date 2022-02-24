@@ -160,7 +160,7 @@
     public function callApiJson($url, $paramsArray = [], $responseAsArray = TRUE) {
       $response = $this->callApi($url, [json_encode($paramsArray)], $responseAsArray);
       
-      if (($data = @json_decode($response, TRUE))) {
+      if (is_string($response) && ($data = @json_decode($response, TRUE))) {
         $response = $data;
         unset($data);
       }
