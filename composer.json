@@ -17,7 +17,7 @@
 		"classmap": ["src/"]
 	},
 	"require": {
-		"php": "^7",
+		"php": ">=7",
 		"filipekp/helpers": "^1",
 		"ext-curl": "*"
 	}
