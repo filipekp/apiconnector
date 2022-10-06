@@ -19,6 +19,7 @@
 	"require": {
 		"php": ">=7",
 		"filipekp/helpers": "^1",
-		"ext-curl": "*"
-	}
+		"ext-curl": "*",
+    "ext-json": "*"
+  }
 }

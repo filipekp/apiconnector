@@ -7,16 +7,12 @@
   /**
    * Třída Connector slouží pro komunikaci s API e-shopů.
    *
-   * test popisu
-   *
    * @author    Pavel Filípek <pavel@filipek-czech.cz>
    * @copyright © 2019, Proclient s.r.o.
    * @created   20.02.2019
    */
   class Connector
   {
-    private static $VERSION = '___VERSION_N/A___';
-    
     /** @var null|string  */
     private $apiUrl = NULL;
     
@@ -35,16 +31,32 @@
     /** @var int  */
     private $requestTimeout = 30;
     
-    private static $cookieIndex = '';
+    /** @var null|string */
+    private $principal = NULL;
     
+    /** @var null|string */
+    private $requestMethod = NULL;
+  
     private $tmpDir = NULL;
-    
+  
     private $lastTokenFile = '';
     private $cookieFile = '';
     private $logged = FALSE;
+  
+    const METHOD_GET    = 'GET';
+    const METHOD_POST   = 'POST';
+    const METHOD_PUT    = 'PUT';
+    const METHOD_DELETE = 'DELETE';
+  
+    private static $VERSION = '___VERSION_N/A___';
     
-    /** @var bool  */
-    protected $testovaciPromenna = FALSE;
+    public static $allowedMethods = [
+      self::METHOD_GET, self::METHOD_POST, self::METHOD_PUT, self::METHOD_DELETE,
+    ];
+  
+    public static $TEST = 'a';
+    
+    private static $cookieIndex = '';
     
     /**
      * Connector constructor.
@@ -101,25 +113,56 @@
     public function callApi ($url, $paramsArray = [], $responseAsArray = TRUE, $countTry = 3) {
       /** @var string $link */
       $link = $this->apiUrl . $url . (($this->token) ? '&token=' . $this->token : '');
+  
+      $sendHeaders = [
+        'Accept-Encoding: gzip, deflate',
+        'Cache-Control: no-cache',
+        'Connection: Keep-Alive',
+      ];
+  
+      if (!is_null($this->principal)) {
+        $sendHeaders[] = 'PC-Principal: ' . $this->principal;
+    
+        $this->principal = NULL;
+      }
+      
       
       $ch = curl_init();
-      curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        'Expect:',
-        'Accept-Encoding: gzip, deflate'
-      ]);
-      curl_setopt($ch, CURLOPT_ENCODING, "gzip");
       curl_setopt($ch, CURLOPT_URL, $link);
+      
+      $sourceRequestMethod  = NULL;
+      if ($this->requestMethod) {
+        if (!in_array($this->requestMethod, self::$allowedMethods)) {
+          throw new \Exception('Call method `' . $this->requestMethod . '` is not allowed!');
+        }
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->requestMethod);
+        $sourceRequestMethod = $this->requestMethod;
+        
+        $this->requestMethod = NULL;
+      }
+      
+      if (is_array($paramsArray)) {
+        curl_setopt($ch, CURLOPT_POST, count($paramsArray));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($paramsArray));
+      } elseif (is_string($paramsArray)) {
+        $sendHeaders[] = 'Accept: application/json';
+        $sendHeaders[] = 'Content-Type: application/json';
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $paramsArray);
+      } else {
+        $sendHeaders[] = 'Accept: application/json';
+      }
+      
+      curl_setopt($ch, CURLOPT_HTTPHEADER, $sendHeaders);
+      curl_setopt($ch, CURLOPT_ENCODING, "gzip");
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
       curl_setopt($ch, CURLOPT_TIMEOUT, $this->requestTimeout);
       curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
       curl_setopt($ch, CURLOPT_AUTOREFERER, TRUE);
       curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-      curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+      curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
       curl_setopt($ch, CURLOPT_USERAGENT, "ApiConnector-proclient-ver. " . self::getVersion());
       curl_setopt($ch, CURLOPT_COOKIEJAR, $this->cookieFile);
       curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookieFile);
-      curl_setopt($ch, CURLOPT_POST, count($paramsArray));
-      curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($paramsArray));
       
       //execute post
       $result             = curl_exec($ch);
@@ -138,6 +181,7 @@
           $countTry--;
           if ($this->login($countTry)) {
             $this->logged = TRUE;
+            $this->setRequestMethod($sourceRequestMethod);
             $decodedResult = $this->callApi($url, $paramsArray, $responseAsArray);
           }
         }
@@ -168,10 +212,22 @@
       return $response;
     }
     
+    /**
+     * @param            $url
+     * @param array|NULL $data
+     *
+     * @return mixed
+     * @throws \Exception
+     */
+    public function callJson($url, $data = NULL) {
+      if (!is_null($data)) {
+        $data = json_encode($data);
+      }
+      return $this->callApi($url, $data);
+    }
+    
     /** @return array */
     public function getLastResponse() { return $this->lastResponse; }
-    /** @param $requestTimeout */
-    public function setRequestTimeout($requestTimeout) { $this->requestTimeout = $requestTimeout; }
     /** @return false|string */
     public function getToken() { return $this->token; }
     /** @return string */
@@ -198,6 +254,39 @@
      * @throws \Exception
      */
     public function setDev() { throw new \Exception('Method ' . __METHOD__ . ' is deprecated. For Dev create new instance of ' . __CLASS__); }
+  
+    /**
+     * @param $requestTimeout
+     *
+     * @return $this
+     */
+    public function setRequestTimeout($requestTimeout) {
+      $this->requestTimeout = $requestTimeout;
+    
+      return $this;
+    }
+  
+    /**
+     * @param $principal
+     *
+     * @return $this
+     */
+    public function setPrincipal($principal) {
+      $this->principal = $principal;
+  
+      return $this;
+    }
+  
+    /**
+     * @param $method
+     *
+     * @return $this
+     */
+    public function setRequestMethod($method) {
+      $this->requestMethod = $method;
+      
+      return $this;
+    }
   
     /**
      * Vrátí aktuální verzi konektoru.
